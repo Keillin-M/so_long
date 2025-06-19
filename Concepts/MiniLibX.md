@@ -1,4 +1,5 @@
 # 🚀🎨 MiniLibX
+
 ## 🤔 What is MiniLibX? 
 **MiniLibX** (aka mlx) is a tiny, simple graphics library mainly used in Unix-like systems (Linux/macOS). It helps you open windows, draw pixels/shapes, display images, and handle keyboard/mouse input. Perfect for learning basic graphical programming!
 
