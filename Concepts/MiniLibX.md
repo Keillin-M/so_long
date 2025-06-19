@@ -31,12 +31,12 @@ int main() {
     void *mlx;
     void *win;
 
-    mlx = mlx_init();                     // Initialize MiniLibX 🚀
-    win = mlx_new_window(mlx, 800, 600, "My Window");  // Open 800x600 window 🪟
+    mlx = mlx_init();                     // Initialize MiniLibX 
+    win = mlx_new_window(mlx, 800, 600, "My Window");  // Open 800x600 window 
     
-    mlx_pixel_put(mlx, win, 400, 300, 0x00FF00);  // Draw green pixel at (400, 300) 🌈
+    mlx_pixel_put(mlx, win, 400, 300, 0x00FF00);  // Draw green pixel at (400, 300) 
     
-    mlx_loop(mlx);                       // Start event loop 🔄
+    mlx_loop(mlx);                       // Start event loop 
 
     return 0;
 }
