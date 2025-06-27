@@ -1,6 +1,6 @@
 # 🌊 Flood Fill
 
-## What is Flood Fill?
+## 💡 What is Flood Fill?
 Imagine you have a map — like a grid of squares. Some squares are walls, some are open space, maybe some are water or other stuff.
 
 Flood fill is a way to figure out which squares you can reach starting from a certain point.
