@@ -76,6 +76,32 @@ int	read_map(t_game *game, char **argv)
 	return (close(game->fd), 0);
 }
 
+int	draw_map(t_game *game, int row, int x)
+{
+	while (row < game->total_row)
+	{
+		x = 0;
+		while (game->map[row][x] != '\0' && game->map[row][x] != '\n')
+		{
+			if (game->map[row][x] == '1')
+				ft_image(game, game->wall, x, row);
+			else if (game->map[row][x] == 'C')
+				ft_image(game, game->obj, x, row);
+			else if (game->map[row][x] == 'E')
+				ft_image(game, game->exit, x, row); 
+			else if (game->map[row][x] == 'P')
+				ft_image(game, game->player[game->i], x, row); 
+			else if (game->map[row][x] == '0')
+				ft_image(game, game->floor, x, row);
+			else
+				return (1);
+			x++;
+		}
+		row++;
+	}
+	return (0);
+}
+
 int	load_map(t_game *game, char **argv)
 {
 	int	i;
@@ -96,31 +122,7 @@ int	load_map(t_game *game, char **argv)
 	if (read_map (game, argv))
 		return (1);
 	mlx_clear_window(game->mlx, game->win);
-	while (row < game->total_row)
-	{
-		draw_map(game, row, 0);
-		row++;
-	}
+	if(draw_map(game, row, 0))
+		return (1);
 	return (0);
-}
-
-void	draw_map(t_game *game, int row, int x)
-{
-	while (game->map[row][x] != '\0' && game->map[row][x] != '\n')
-	{
-		ft_image(game, game->floor, x, row);
-		if (game->map[row][x] == '1')
-			ft_image(game, game->wall, x, row);
-		if (game->map[row][x] == 'C')
-			ft_image(game, game->obj, x, row);
-		if (game->map[row][x] == 'E')
-		{
-			ft_image(game, game->exit, x, row); 
-			game->y_exit = row;
-			game->x_exit = x;
-		}
-		if (game->map[row][x] == 'P')
-			ft_image(game, game->player, x, row); 
-		x++;
-	}
 }

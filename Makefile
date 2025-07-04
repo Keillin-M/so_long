@@ -20,7 +20,8 @@ LIBFT_DIR = Libft
 LIBFT_LIB = $(LIBFT_DIR)/libft.a
 
 EXE = so_long
-EXE_SRCS = so_long.c so_long_utils.c map_check.c map_utils.c cleaner_utils.c
+EXE_SRCS = so_long.c so_long_utils.c map_check.c map_utils.c cleaner_utils.c \
+	   texture_utils.c
 EXE_OBJS = $(EXE_SRCS:.c=.o)
 
 MLX_LIBS = -lmlx -lX11 -lXext -lm

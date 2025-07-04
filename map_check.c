@@ -25,7 +25,11 @@ static int	char_check(t_game *game, int i, int j)
 		game->y = i;
 	}
 	if (game->map_cpy[i][j] == 'E')
+	{
 		game->e++;
+		game->x_exit = i;
+		game->y_exit = j;
+	}
 	if (game->map_cpy[i][j] == 'C')
 		game->count++;
 	return (0);

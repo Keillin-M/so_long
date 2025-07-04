@@ -12,43 +12,26 @@
 
 #include "so_long.h"
 
-void	ft_xpm(t_game *game)
+static int	map_ext(char *argv)
 {
-	game->wall = mlx_xpm_file_to_image(game->mlx, "textures/wall.xpm", \
-			&game->w, &game->h);
-	game->floor = mlx_xpm_file_to_image(game->mlx, "textures/floor.xpm", \
-			&game->w, &game->h);
-	game->player = mlx_xpm_file_to_image(game->mlx, "textures/fox.xpm", \
-			&game->w, &game->h);
-	game->obj = mlx_xpm_file_to_image(game->mlx, "textures/heart.xpm", \
-			&game->w, &game->h); 
-	game->exit = mlx_xpm_file_to_image(game->mlx, "textures/exit.xpm", \
-			&game->w, &game->h);
-	game->exit_open = mlx_xpm_file_to_image(game->mlx, \
-			"textures/exit_open.xpm", &game->w, &game->h);
-	if (!game->wall || !game->floor || !game->player || !game->obj
-		|| !game->exit || !game->exit_open)
+	int	len;
+
+	len = ft_strlen(argv);
+	if (len < 4)
 	{
-		perror("Error loading image");
-		ft_close(game);
+		ft_printf("File extension invalid\n");
+		return (1);
 	}
+	if (ft_strncmp(argv + len - 4, ".ber", 4) == 0)
+		return (0);
+	ft_printf("File extension invalid\n");	
+	return (1);
 }
 
 int	ft_close(t_game *game)
 {
 	ft_clean_map(game);
-	if (game->wall)
-		mlx_destroy_image(game->mlx, game->wall);
-	if (game->floor)
-		mlx_destroy_image(game->mlx, game->floor);
-	if (game->player)
-		mlx_destroy_image(game->mlx, game->player);
-	if (game->obj)
-		mlx_destroy_image(game->mlx, game->obj);
-	if (game->exit)
-		mlx_destroy_image(game->mlx, game->exit);
-	if (game->exit_open)
-		mlx_destroy_image(game->mlx, game->exit_open);
+//	ft_destroy_img(game);
 	mlx_destroy_window(game->mlx, game->win);
 	mlx_destroy_display(game->mlx);
 	if (game->mlx)
@@ -64,6 +47,19 @@ void	ft_init(t_game *game)
 	game->movement = 0;
 	game->error = 0;
 	game->total_row = 0;
+	game->i = 0;
+	game->mov = 1;
+	game->dir = 's';
+/*	while (game->i < 12)
+	{
+		game->player[game->i] = NULL;
+		game->i++;
+	}
+	game->wall = NULL;
+	game->floor = NULL;
+	game->exit = NULL;
+	game->exit_open = NULL;
+	game->i = 0;*/
 }
 
 int	ft_open(t_game *game, char **argv)
@@ -104,8 +100,9 @@ int	main(int argc, char **argv)
 		game.error = 1;
 	if (game.error)
 		ft_close(&game);
-	mlx_hook(game.win, 17, 0, ft_close, NULL);
-	mlx_key_hook(game.win, ft_key_event, &game);
+	mlx_hook(game.win, 17, 0, ft_close, &game);
+	mlx_loop_hook(game.mlx, animate, &game);
+	mlx_hook(game.win, 2, 1L << 0, ft_key_event, &game);
 	mlx_loop(game.mlx);
 	return (0);
 }
