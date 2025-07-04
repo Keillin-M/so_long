@@ -17,7 +17,12 @@ static int	map_ext(char *argv)
 	int	len;
 
 	len = ft_strlen(argv);
-	if (len < 4)
+	if (len < 9)
+	{
+		ft_printf("File extension invalid\n");
+		return (1);
+	}
+	if (argv[len - 5] == '/')
 	{
 		ft_printf("File extension invalid\n");
 		return (1);
@@ -39,7 +44,7 @@ int	ft_close(t_game *game)
 	return (exit(0), 0);
 }
 
-void	ft_init(t_game *game)
+static void	ft_init(t_game *game)
 {
 	game->count = 0;
 	game->p = 0;
@@ -62,7 +67,7 @@ void	ft_init(t_game *game)
 	game->i = 0;*/
 }
 
-int	ft_open(t_game *game, char **argv)
+static int	ft_open(t_game *game, char **argv)
 {
 	game->mlx = mlx_init();
 	if (!game->mlx)
@@ -101,7 +106,8 @@ int	main(int argc, char **argv)
 	if (game.error)
 		ft_close(&game);
 	mlx_hook(game.win, 17, 0, ft_close, &game);
-	mlx_loop_hook(game.mlx, animate, &game);
+//	mlx_loop_hook(game.mlx, animate, &game);
+	mlx_loop_hook(game.mlx, render, &game);
 	mlx_hook(game.win, 2, 1L << 0, ft_key_event, &game);
 	mlx_loop(game.mlx);
 	return (0);

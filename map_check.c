@@ -27,8 +27,8 @@ static int	char_check(t_game *game, int i, int j)
 	if (game->map_cpy[i][j] == 'E')
 	{
 		game->e++;
-		game->x_exit = i;
-		game->y_exit = j;
+		game->x_exit = j;
+		game->y_exit = i;
 	}
 	if (game->map_cpy[i][j] == 'C')
 		game->count++;
@@ -50,7 +50,7 @@ static int	map_check(t_game *game, int i, int j)
 	}
 	if (game->p != 1 || game->e != 1 || game->count < 1)
 		return (perror("Must be only one player, one exit and \
-			at least one collectible"), 1);
+				at least one collectible"), 1);
 	return (0);
 }
 
@@ -81,8 +81,14 @@ static int	flood_fill(t_game *game, int y, int x)
 {
 	if (y < 0 || x < 0 || y >= game->total_row || x >= game->line_len)
 		return (1);
-	if (game->map_cpy[y][x] == '1' || game->map_cpy[y][x] == 'X')
+	if (game->map_cpy[y][x] == '1' || game->map_cpy[y][x] == 'X'
+		|| game->map_cpy[y][x] == 'A')
 		return (0);
+	if (game->map_cpy[y][x] == 'E')
+	{
+		game->map_cpy[y][x] = 'A';
+		return (0);
+	}
 	game->map_cpy[y][x] = 'X';
 	flood_fill(game, y - 1, x);
 	flood_fill(game, y + 1, x);

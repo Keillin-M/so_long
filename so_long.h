@@ -19,6 +19,7 @@
 # include <unistd.h>
 # include <string.h>
 # include <stdio.h>
+# include <sys/time.h>
 
 typedef struct s_game
 {
@@ -62,12 +63,11 @@ int		map_size(t_game *game, char **argv);
 int		read_map(t_game *game, char **argv);
 int		load_map(t_game *game, char **argv);
 int		ft_printf(const char *format, ...);
-int		animate(t_game *game);
 int	draw_map(t_game *game, int row, int x);
+int	render(t_game *game);
 void	ft_destroy_img(t_game *game);
 void	ft_xpm(t_game *game);
 void	ft_clean_map(t_game *game);
-void	ft_update_p(t_game *game, int keycode);
 void	ft_image(t_game *game, void *img, int x, int y);
 char	*get_next_line(int fd);
 

@@ -12,18 +12,17 @@
 
 #include "so_long.h"
 
-void	ft_image(t_game *game, void *img, int x, int y)
+/*static void	ft_print_mov(t_game *game)
 {
-	mlx_put_image_to_window(game->mlx, game->win, img, 
-		game->w * x, game->h * y);
-}
+	char	*s_mov;
 
-void	ft_update_p(t_game *game, int keycode)
+	s_mov = ft_itoa(game->movement);
+	mlx_string_put(game->mlx, game->win, 10, 10, 0xFFFFFF, s_mov);
+}*/
+
+static void	ft_update_p(t_game *game, int keycode)
 {
-	if (game->map[game->y][game->x] == 'E')
-		ft_image(game, game->exit, game->x, game->y);
-	else
-		ft_image(game, game->floor, game->x, game->y);
+	ft_image(game, game->floor, game->x, game->y);
 	if (keycode == 'w' || keycode == 65362)
 	{
 		ft_image(game, game->player[9], game->x, game->y);
@@ -62,7 +61,7 @@ int	ft_move(t_game *game, int keycode)
 				ft_image(game, game->exit_open, game->x_exit, game->y_exit);
 		}
 		if (game->map[game->new_y][game->new_x] == '0' ||
-			game->map[game->new_y][game->new_x] == 'E')
+			game->map[game->new_y][game->new_x] == 'P')
 		{
 			ft_image(game, game->floor, game->x, game->y);
 			game->x = game->new_x;
@@ -75,12 +74,8 @@ int	ft_move(t_game *game, int keycode)
 	return (0);
 }
 
-int	ft_key_event(int keycode, t_game *game)
+static void	ft_direction(t_game *game, int keycode)
 {
-	game->new_x = game->x;
-	game->new_y = game->y;
-	if (keycode == 65307)
-		ft_close(game);
 	if (keycode == 'w' || keycode == 65362)
 	{
 		game->new_y -= 1;
@@ -101,10 +96,17 @@ int	ft_key_event(int keycode, t_game *game)
 		game->new_x += 1;
 		game->dir = 'd';
 	}
+}
+
+int	ft_key_event(int keycode, t_game *game)
+{
+	game->new_x = game->x;
+	game->new_y = game->y;
+	if (keycode == 65307)
+		ft_close(game);
+	ft_direction(game, keycode);
 	if (game->x != game->new_x || game->y != game->new_y)
-	{
 		game->mov = 1;
-	}
 	else
 		game->mov = 0;
 	ft_move(game, keycode);

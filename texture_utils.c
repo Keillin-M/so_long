@@ -12,6 +12,12 @@
 
 #include "so_long.h"
 
+void	ft_image(t_game *game, void *img, int x, int y)
+{
+	mlx_put_image_to_window(game->mlx, game->win, img, 
+		game->w * x, game->h * y);
+}
+
 static void	ft_xpm_player(t_game *game)
 {
 	game->player[0] = mlx_xpm_file_to_image(game->mlx, "textures/D.xpm", \
