@@ -47,6 +47,7 @@ typedef struct s_game
 	void	*floor;
 	void	*wall;
 	void	*player[12];
+	void	*enemy[6];
 	void	*obj;
 	void	*exit;
 	void	*exit_open;
@@ -55,16 +56,28 @@ typedef struct s_game
 	char	**map_cpy;
 }	t_game;
 
+typedef struct s_bonus
+{
+	int	i;
+	int	x;
+	int	y;
+	int	dir;
+	int	frame;
+	int	sum;
+	int	stop;
+	int	count;
+}	t_bonus;
+
 int		ft_key_event(int keycode, t_game *game);
 int		ft_move(t_game *game, int keycode);
 int		ft_close(t_game *game);
 int		valid_map(t_game *game, int i, int j);
 int		map_size(t_game *game, char **argv);
 int		read_map(t_game *game, char **argv);
-int		load_map(t_game *game, char **argv);
+int		load_map(t_game *game, t_bonus *bonus, char **argv);
 int		ft_printf(const char *format, ...);
-int	draw_map(t_game *game, int row, int x);
-int	render(t_game *game);
+int	draw_map(t_game *game, t_bonus *bonus, int row, int x);
+int	render(t_game *game, t_bonus *bonus);
 void	ft_destroy_img(t_game *game);
 void	ft_xpm(t_game *game);
 void	ft_clean_map(t_game *game);

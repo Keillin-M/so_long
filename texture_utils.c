@@ -46,7 +46,7 @@ static void	ft_xpm_player(t_game *game)
 			&game->w, &game->h);
 }
 
-void	ft_xpm(t_game *game)
+static void	ft_xpm_map(t_game *game)
 {
 	game->wall = mlx_xpm_file_to_image(game->mlx, "textures/wall.xpm", \
 			&game->w, &game->h);
@@ -58,12 +58,36 @@ void	ft_xpm(t_game *game)
 			&game->w, &game->h);
 	game->exit_open = mlx_xpm_file_to_image(game->mlx, \
 			"textures/exit_open.xpm", &game->w, &game->h);
+}
+
+static void	ft_xpm_enemy(t_game *game)
+{
+	game->enemy[0] = mlx_xpm_file_to_image(game->mlx, "textures/ER.xpm", \
+			&game->w, &game->h);
+	game->enemy[1] = mlx_xpm_file_to_image(game->mlx, "textures/ER1.xpm", \
+			&game->w, &game->h);
+	game->enemy[2] = mlx_xpm_file_to_image(game->mlx, "textures/ER2.xpm", \
+			&game->w, &game->h);
+	game->enemy[3] = mlx_xpm_file_to_image(game->mlx, "textures/EL.xpm", \
+			&game->w, &game->h);
+	game->enemy[4] = mlx_xpm_file_to_image(game->mlx, "textures/EL1.xpm", \
+			&game->w, &game->h);
+	game->enemy[5] = mlx_xpm_file_to_image(game->mlx, "textures/EL2.xpm", \
+			&game->w, &game->h);
+}
+
+void	ft_xpm(t_game *game)
+{
+	ft_xpm_map(game);
 	ft_xpm_player(game);
+	ft_xpm_enemy(game);
 	if (!game->wall || !game->floor || !game->player[0] || !game->player[1]
 		|| !game->player[2] || !game->player[3] || !game->player[4] 
 		|| !game->player[5] || !game->player[6] || !game->player[7] 
 		|| !game->player[8] || !game->player[9] || !game->player[10] 
-		|| !game->player[11] || !game->obj || !game->exit || !game->exit_open)
+		|| !game->player[11] || !game->enemy[0] || !game->enemy[1]
+		|| !game->enemy[2] || !game->enemy[3] || !game->enemy[4] 
+		|| !game->enemy[5]|| !game->obj || !game->exit || !game->exit_open)
 	{
 		perror("Error loading image");
 		ft_close(game);

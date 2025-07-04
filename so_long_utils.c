@@ -52,7 +52,7 @@ int	ft_move(t_game *game, int keycode)
 	if (game->map[game->new_y][game->new_x] != '1')
 	{
 		if (game->map[game->new_y][game->new_x] == 'E' && game->count == 0)
-			ft_close(game);
+			return (1);
 		if (game->map[game->new_y][game->new_x] == 'C')
 		{
 			game->count--;
@@ -109,6 +109,10 @@ int	ft_key_event(int keycode, t_game *game)
 		game->mov = 1;
 	else
 		game->mov = 0;
-	ft_move(game, keycode);
+	if (ft_move(game, keycode))
+	{
+		ft_printf("Congrats! YOU WIN!\n");
+		ft_close(game);
+	}
 	return (0);
 }

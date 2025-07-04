@@ -16,7 +16,7 @@ static int	char_check(t_game *game, int i, int j)
 {
 	if (game->map_cpy[i][j] != '1' && game->map_cpy[i][j] != '0' \
 			&& game->map_cpy[i][j] != 'P' && game->map_cpy[i][j] != 'E' \
-				&& game->map_cpy[i][j] != 'C')
+				&& game->map_cpy[i][j] != 'C' && map_cpy[i][j] != 'R')
 		return (perror("Invalid char in map"), 1);
 	if (game->map_cpy[i][j] == 'P')
 	{
@@ -32,11 +32,16 @@ static int	char_check(t_game *game, int i, int j)
 	}
 	if (game->map_cpy[i][j] == 'C')
 		game->count++;
+	if (game->map_cpy[i][j] == 'R')
+		bonus->count++;
 	return (0);
 }
 
 static int	map_check(t_game *game, int i, int j)
 {
+	if ((game->total_row * game->h > 1080)
+		|| (game->line_len * game->w > 1920))
+		return (perror("Map is too big"), 1);
 	while (i < game->total_row)
 	{
 		j = 0;

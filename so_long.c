@@ -44,7 +44,7 @@ int	ft_close(t_game *game)
 	return (exit(0), 0);
 }
 
-static void	ft_init(t_game *game)
+static void	ft_init(t_game *game, t_bonus *bonus)
 {
 	game->count = 0;
 	game->p = 0;
@@ -55,6 +55,12 @@ static void	ft_init(t_game *game)
 	game->i = 0;
 	game->mov = 1;
 	game->dir = 's';
+	bonus->i = 0;
+	bonus->dir = 1;
+	bonus->stop = 1;
+	bonus->frame = 0;
+	bonus->sum = 0;
+	bonus->count = 0;
 /*	while (game->i < 12)
 	{
 		game->player[game->i] = NULL;
@@ -91,17 +97,18 @@ static int	ft_open(t_game *game, char **argv)
 int	main(int argc, char **argv)
 {
 	t_game	game;
+	t_bonus	bonus;
 
 	if (argc != 2)
 		return (1);
 	if (map_ext(argv[1]))
 		return (1);
-	ft_init(&game);
+	ft_init(&game, &bonus);
 	if (ft_open(&game, argv))
 		game.error = 1;
 	if (valid_map(&game, 0, 0))
 		game.error = 1;
-	if (load_map(&game, argv))
+	if (load_map(&game, &bonus, argv))
 		game.error = 1;
 	if (game.error)
 		ft_close(&game);
