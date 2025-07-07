@@ -29,14 +29,14 @@ static int	map_ext(char *argv)
 	}
 	if (ft_strncmp(argv + len - 4, ".ber", 4) == 0)
 		return (0);
-	ft_printf("File extension invalid\n");	
+	ft_printf("File extension invalid\n");
 	return (1);
 }
 
 int	ft_close(t_game *game)
 {
+	ft_destroy_img(game);
 	ft_clean_map(game);
-//	ft_destroy_img(game);
 	mlx_destroy_window(game->mlx, game->win);
 	mlx_destroy_display(game->mlx);
 	if (game->mlx)
@@ -44,7 +44,7 @@ int	ft_close(t_game *game)
 	return (exit(0), 0);
 }
 
-static void	ft_init(t_game *game, t_bonus *bonus)
+static void	ft_init(t_game *game)
 {
 	game->count = 0;
 	game->p = 0;
@@ -55,22 +55,7 @@ static void	ft_init(t_game *game, t_bonus *bonus)
 	game->i = 0;
 	game->mov = 1;
 	game->dir = 's';
-	bonus->i = 0;
-	bonus->dir = 1;
-	bonus->stop = 1;
-	bonus->frame = 0;
-	bonus->sum = 0;
-	bonus->count = 0;
-/*	while (game->i < 12)
-	{
-		game->player[game->i] = NULL;
-		game->i++;
-	}
-	game->wall = NULL;
-	game->floor = NULL;
-	game->exit = NULL;
-	game->exit_open = NULL;
-	game->i = 0;*/
+	game->e_count = 0;
 }
 
 static int	ft_open(t_game *game, char **argv)
@@ -97,23 +82,21 @@ static int	ft_open(t_game *game, char **argv)
 int	main(int argc, char **argv)
 {
 	t_game	game;
-	t_bonus	bonus;
 
 	if (argc != 2)
 		return (1);
 	if (map_ext(argv[1]))
 		return (1);
-	ft_init(&game, &bonus);
+	ft_init(&game);
 	if (ft_open(&game, argv))
 		game.error = 1;
 	if (valid_map(&game, 0, 0))
 		game.error = 1;
-	if (load_map(&game, &bonus, argv))
+	if (load_map(&game, argv, 0, 0))
 		game.error = 1;
 	if (game.error)
-		ft_close(&game);
+		return (ft_close(&game), 1);
 	mlx_hook(game.win, 17, 0, ft_close, &game);
-//	mlx_loop_hook(game.mlx, animate, &game);
 	mlx_loop_hook(game.mlx, render, &game);
 	mlx_hook(game.win, 2, 1L << 0, ft_key_event, &game);
 	mlx_loop(game.mlx);

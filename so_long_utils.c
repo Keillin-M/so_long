@@ -23,6 +23,9 @@
 static void	ft_update_p(t_game *game, int keycode)
 {
 	ft_image(game, game->floor, game->x, game->y);
+	game->x = game->new_x;
+	game->y = game->new_y;
+	game->map[game->y][game->x] = 'P';
 	if (keycode == 'w' || keycode == 65362)
 	{
 		ft_image(game, game->player[9], game->x, game->y);
@@ -45,27 +48,38 @@ static void	ft_update_p(t_game *game, int keycode)
 	}
 }
 
+static int	ft_move_2(t_game *game)
+{
+	if (game->map[game->new_y][game->new_x] == 'E' && game->count == 0)
+		return (1);
+	if (game->map[game->new_y][game->new_x] == 'C')
+	{
+		game->count--;
+		game->map[game->new_y][game->new_x] = '0';
+		if (game->count == 0)
+			ft_image(game, game->exit_open, game->x_exit, game->y_exit);
+	}
+	return (0);
+}
+
 int	ft_move(t_game *game, int keycode)
 {
 	if (game->x == game->new_x && game->y == game->new_y)
 		return (0);
 	if (game->map[game->new_y][game->new_x] != '1')
 	{
-		if (game->map[game->new_y][game->new_x] == 'E' && game->count == 0)
+		if (ft_move_2(game))
 			return (1);
-		if (game->map[game->new_y][game->new_x] == 'C')
+		if (game->map[game->new_y][game->new_x] == 'R')
 		{
-			game->count--;
-			game->map[game->new_y][game->new_x] = '0';
-			if (game->count == 0)
-				ft_image(game, game->exit_open, game->x_exit, game->y_exit);
+			ft_printf("Oh, no! YOU LOSE!\n");
+			ft_close(game);
 		}
 		if (game->map[game->new_y][game->new_x] == '0' ||
 			game->map[game->new_y][game->new_x] == 'P')
 		{
 			ft_image(game, game->floor, game->x, game->y);
-			game->x = game->new_x;
-			game->y = game->new_y;
+			game->map[game->y][game->x] = '0';
 			ft_update_p(game, keycode);
 			game->movement++;
 			ft_printf("Movement: %d\n", game->movement);

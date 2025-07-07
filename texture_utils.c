@@ -87,7 +87,7 @@ void	ft_xpm(t_game *game)
 		|| !game->player[8] || !game->player[9] || !game->player[10] 
 		|| !game->player[11] || !game->enemy[0] || !game->enemy[1]
 		|| !game->enemy[2] || !game->enemy[3] || !game->enemy[4] 
-		|| !game->enemy[5]|| !game->obj || !game->exit || !game->exit_open)
+		|| !game->player[5] || !game->obj || !game->exit || !game->exit_open)
 	{
 		perror("Error loading image");
 		ft_close(game);

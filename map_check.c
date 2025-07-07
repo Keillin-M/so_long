@@ -12,46 +12,46 @@
 
 #include "so_long.h"
 
-static int	char_check(t_game *game, int i, int j)
+static int	char_check(t_game *game, int j, int i)
 {
-	if (game->map_cpy[i][j] != '1' && game->map_cpy[i][j] != '0' \
-			&& game->map_cpy[i][j] != 'P' && game->map_cpy[i][j] != 'E' \
-				&& game->map_cpy[i][j] != 'C' && map_cpy[i][j] != 'R')
+	if (game->map_cpy[j][i] != '1' && game->map_cpy[j][i] != '0' \
+			&& game->map_cpy[j][i] != 'P' && game->map_cpy[j][i] != 'E' \
+				&& game->map_cpy[j][i] != 'C' && game->map_cpy[j][i] != 'R')
 		return (perror("Invalid char in map"), 1);
-	if (game->map_cpy[i][j] == 'P')
+	if (game->map_cpy[j][i] == 'P')
 	{
 		game->p++;
-		game->x = j;
-		game->y = i;
+		game->x = i;
+		game->y = j;
 	}
-	if (game->map_cpy[i][j] == 'E')
+	if (game->map_cpy[j][i] == 'E')
 	{
 		game->e++;
-		game->x_exit = j;
-		game->y_exit = i;
+		game->x_exit = i;
+		game->y_exit = j;
 	}
-	if (game->map_cpy[i][j] == 'C')
+	if (game->map_cpy[j][i] == 'C')
 		game->count++;
-	if (game->map_cpy[i][j] == 'R')
-		bonus->count++;
+	if (game->map_cpy[j][i] == 'R')
+		bonus_check(game, j, i);
 	return (0);
 }
 
-static int	map_check(t_game *game, int i, int j)
+static int	map_check(t_game *game, int j, int i)
 {
 	if ((game->total_row * game->h > 1080)
 		|| (game->line_len * game->w > 1920))
 		return (perror("Map is too big"), 1);
-	while (i < game->total_row)
+	while (j < game->total_row)
 	{
-		j = 0;
-		while (j < game->line_len)
+		i = 0;
+		while (i < game->line_len)
 		{
-			if (char_check(game, i, j))
+			if (char_check(game, j, i))
 				return (1);
-			j++;
+			i++;
 		}
-		i++;
+		j++;
 	}
 	if (game->p != 1 || game->e != 1 || game->count < 1)
 		return (perror("Must be only one player, one exit and \
