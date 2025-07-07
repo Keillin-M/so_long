@@ -6,11 +6,27 @@
 /*   By: kmaeda <kmaeda@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:48:19 by kmaeda            #+#    #+#             */
-/*   Updated: 2025/07/07 16:42:46 by kmaeda           ###   ########.fr       */
+/*   Updated: 2025/07/07 18:42:42 by kmaeda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
+
+void	ft_print_mov(t_game *game)
+{
+	char	*s_mov;
+
+	if (!game->move)
+	{
+		perror("Failed to load move image");
+		ft_close(game);
+	}
+	ft_image(game, game->move, 0, 0);
+	s_mov = ft_itoa(game->movement);
+	mlx_string_put(game->mlx, game->win, 36, 15, 0xFFFFFF, "MOVE");
+	mlx_string_put(game->mlx, game->win, 45, 30, 0xFFFFFF, s_mov);
+	free(s_mov);
+}
 
 void	bonus_check(t_game *game, int j, int i)
 {

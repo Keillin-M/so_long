@@ -85,5 +85,6 @@ int	render(t_game *game)
 		i++;
 	}
 	usleep(16000);
+	ft_print_mov(game);
 	return (0);
 }

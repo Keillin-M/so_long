@@ -58,6 +58,8 @@ static void	ft_xpm_map(t_game *game)
 			&game->w, &game->h);
 	game->exit_open = mlx_xpm_file_to_image(game->mlx, \
 			"textures/exit_open.xpm", &game->w, &game->h);
+	game->move = mlx_xpm_file_to_image(game->mlx, "textures/move.xpm", \
+			&game->w, &game->h);
 }
 
 static void	ft_xpm_enemy(t_game *game)

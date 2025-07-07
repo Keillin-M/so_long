@@ -12,14 +12,6 @@
 
 #include "so_long.h"
 
-/*static void	ft_print_mov(t_game *game)
-{
-	char	*s_mov;
-
-	s_mov = ft_itoa(game->movement);
-	mlx_string_put(game->mlx, game->win, 10, 10, 0xFFFFFF, s_mov);
-}*/
-
 static void	ft_update_p(t_game *game, int keycode)
 {
 	ft_image(game, game->floor, game->x, game->y);
@@ -82,7 +74,6 @@ int	ft_move(t_game *game, int keycode)
 			game->map[game->y][game->x] = '0';
 			ft_update_p(game, keycode);
 			game->movement++;
-			ft_printf("Movement: %d\n", game->movement);
 		}
 	}
 	return (0);

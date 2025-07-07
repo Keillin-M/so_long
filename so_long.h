@@ -57,6 +57,7 @@ typedef struct s_game
 	char	dir;
 	void	*mlx;
 	void	*win;
+	void	*move;
 	void	*floor;
 	void	*wall;
 	void	*player[12];
@@ -80,7 +81,7 @@ int		load_map(t_game *game, char **argv, int i, int row);
 int		ft_printf(const char *format, ...);
 int		draw_map(t_game *game, int row, int x);
 int		render(t_game *game);
-//void	ft_draw_e(t_game *game, double delta_time);
+void	ft_print_mov(t_game *game);
 void	bonus_check(t_game *game, int i, int j);
 void	enemy(t_bonus *bonus, t_game *game, double delta_time);
 void	ft_destroy_img(t_game *game);

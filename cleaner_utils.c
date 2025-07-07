@@ -82,5 +82,7 @@ void	ft_destroy_img(t_game *game)
 		mlx_destroy_image(game->mlx, game->exit);
 	if (game->exit_open)
 		mlx_destroy_image(game->mlx, game->exit_open);
+	if (game->move)
+		mlx_destroy_image(game->mlx, game->move);
 	ft_destroy_p(game);
 }
