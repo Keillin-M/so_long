@@ -35,10 +35,13 @@ static int	map_ext(char *argv)
 
 int	ft_close(t_game *game)
 {
-	ft_destroy_img(game);
+	if (game->wall)
+		ft_destroy_img(game);
 	ft_clean_map(game);
-	mlx_destroy_window(game->mlx, game->win);
-	mlx_destroy_display(game->mlx);
+	if (game->win)
+		mlx_destroy_window(game->mlx, game->win);
+	if (game->mlx)
+		mlx_destroy_display(game->mlx);
 	if (game->mlx)
 		free(game->mlx);
 	return (exit(0), 0);
@@ -89,7 +92,7 @@ int	main(int argc, char **argv)
 		return (1);
 	ft_init(&game);
 	if (ft_open(&game, argv))
-		game.error = 1;
+		return (exit(0), 1);
 	if (valid_map(&game, 0, 0))
 		game.error = 1;
 	if (load_map(&game, argv, 0, 0))
