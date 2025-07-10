@@ -58,93 +58,76 @@ int main() {
 - Try starting with just opening a window and drawing a pixel, then move on to handling keyboard inputs or drawing images.
 - Remember that MiniLibX may behave differently depending on your OS, especially between Linux and macOS.
 
-Writing Pixels to an Image — Explained Simply
-Why not use mlx_pixel_put directly?
-mlx_pixel_put puts a pixel directly to the window right away.
+## 🖌️ Writing Pixels to an Image — Explained Simply
 
-This is very slow because it redraws the window for every single pixel.
+### ❌ Why not use mlx_pixel_put directly?
+- mlx_pixel_put writes a single pixel directly to the window in real time.
+- This might sound simple, but it's very slow — especially if you're drawing many pixels.
 
-Imagine painting a huge picture one dot at a time and showing the picture every time you add a dot — that’s inefficient!
+Imagine painting a huge picture one dot at a time, and showing it to your friend after every dot.
+Exhausting, right?
 
-So, what’s the better way?
-Instead of drawing pixels directly to the window, draw them to an image buffer first (a block of memory).
+### ✅ A Better Way: Draw to an Image Buffer First
+Instead of drawing pixels live to the screen:
 
-Once the whole image is ready (all pixels are drawn in memory), push that entire image to the window at once.
+- 📦 Draw all your pixels to a memory buffer (an image).
+- 🖼️ Once you're done, display the full image to the window in one go.
 
-This is like painting the whole picture on a canvas offscreen first, then hanging the canvas on the wall all at once — much faster and smoother.
+It's like painting the entire picture on a canvas offscreen, then hanging the finished painting on the wall — fast and smooth!
 
-Step 1: Create an image buffer
-You create an empty image with the size of your window (e.g., 1920x1080 pixels):
-
-c
-Copy
-Edit
+### 🪜 Step-by-Step Guide
+### 🧱 Step 1: Create an Image Buffer
+```c
 void *mlx = mlx_init();
 void *img = mlx_new_image(mlx, 1920, 1080);
-Step 2: Get the image data address
+```
+This creates a blank image in memory (1920x1080 pixels).
+
+### 🔍 Step 2: Access the Image Data
 You need to know where in memory the image pixels are stored, so you can write colors there.
-
-Use this function:
-
-c
-Copy
-Edit
+```c
 char *addr = mlx_get_data_addr(img, &bpp, &line_length, &endian);
-addr points to the start of pixel data.
+```
+What do these mean?
+| Variable      | Meaning                               |
+| ------------- | ------------------------------------- |
+| `addr`        | Pointer to the start of pixel data    |
+| `bpp`         | Bits per pixel (usually 32 = 4 bytes) |
+| `line_length` | Bytes per row (can include padding!)  |
+| `endian`      | Byte order (not critical for now)     |
 
-bpp = bits per pixel (how many bits describe one pixel, usually 32 bits or 4 bytes).
+❗ Don’t just multiply width × bpp. Always use line_length to get pixel positions — memory alignment can add extra bytes per row.
 
-line_length = how many bytes each row of pixels uses in memory.
-
-endian = tells you byte order (mostly not important for beginners).
-
-Important detail: Why not just multiply by window width?
-Pixels in memory are stored row by row.
-
-Sometimes, the number of bytes per row (line_length) is larger than the window width times bytes per pixel (due to memory alignment or padding).
-
-So, you always use line_length to calculate pixel positions.
-
-Step 3: Calculate the pixel's memory position
-To find the exact spot in memory for pixel at (x, y):
-
-c
-Copy
-Edit
+### 📍 Step 3: Find the Pixel's Memory Position
+To draw a pixel at (x, y):
+```c
 int offset = (y * line_length) + (x * (bpp / 8));
-Multiply the row number y by line_length (bytes per row).
+```
+- Multiply row (y) by line_length to get the row's start
+- Add the pixel offset in that row
 
-Add the column number x times bytes per pixel (bpp / 8).
+### 🎨 Step 4: Set the Pixel Color
 
-Step 4: Write the pixel color
-c
-Copy
-Edit
+```c
 *(unsigned int *)(addr + offset) = color;
-You write a 32-bit color value (like 0x00FF00 for green) into the memory at that offset.
-
-This changes the pixel color in the image buffer.
-
-Step 5: Display the image
-After setting all pixels you want in the image, push it to the window:
-
-c
-Copy
-Edit
+```
+For example:
+```c
+*(unsigned int *)(addr + offset) = 0x00FF00; // Green
+```
+### 🖥️ Step 5: Display the Final Image
+```c
 mlx_put_image_to_window(mlx, win, img, 0, 0);
-This draws the whole image at once, very fast and smooth.
-
-Example function to put pixels (like mlx_pixel_put, but faster):
-c
-Copy
-Edit
+```
+### 🧰 Custom Pixel Function Example
+```c
 typedef struct s_data {
     void    *img;
     char    *addr;
     int     bpp;
     int     line_length;
     int     endian;
-}   t_data;
+} t_data;
 
 void my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
@@ -153,24 +136,19 @@ void my_mlx_pixel_put(t_data *data, int x, int y, int color)
     dst = data->addr + (y * data->line_length + x * (data->bpp / 8));
     *(unsigned int*)dst = color;
 }
-Bonus: Avoid screen tearing
-If you draw pixels directly on the image shown on the screen, you might see flickering or tearing.
+```
+Now you can use my_mlx_pixel_put() just like mlx_pixel_put, but it's way faster!
 
-To fix this, use double buffering:
+### ✨ Bonus: Avoid Screen Tearing with Double Buffering
+- If you're seeing flickering or tearing when redrawing:
+- Keep two image buffers.
+- Draw everything on the hidden buffer.
+- Once the frame is ready, swap the buffers and display the new image.
 
-Have two (or more) image buffers.
+🧠 The user only sees fully rendered frames — buttery smooth animations!
 
-Draw to a hidden image buffer.
-
-When ready, swap the hidden image with the visible one.
-
-This way, the user only sees fully drawn frames.
-
-TL;DR for beginners:
-Don’t use mlx_pixel_put for many pixels; it’s slow.
-
-Create an image buffer, write pixels there by calculating their position in memory.
-
-Push the entire image to the window once done.
-
-Use double buffering if you want smooth animations without flickering.
+## 🧵 TL;DR for Beginners
+- ❌ Don’t use mlx_pixel_put for lots of pixels.
+- ✅ Draw to an image buffer in memory.
+- 🖼️ Use mlx_put_image_to_window() to display the full image.
+- ⚙️ For smooth animations, use double buffering.
