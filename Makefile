@@ -31,7 +31,6 @@ EXE_OBJS = $(EXE_SRCS:.c=.o)
 
 all: $(MLX_LIB) $(LIBFT_LIB) $(NAME) $(EXE)
 
-# Clone and build MiniLibX if not already there
 $(MLX_LIB):
 	@if [ ! -d $(MLX_DIR) ]; then \
 		echo "Cloning MiniLibX..."; \
@@ -59,13 +58,14 @@ clean:
 fclean: clean
 	rm -f $(NAME) $(EXE) test_game
 	$(MAKE) fclean -C $(LIBFT_DIR)
+	@if [ -d mlx ]; then rm -rf mlx; fi
 
 re: fclean all
 
 test: $(NAME) $(LIBFT_LIB) $(MLX_LIB)
 	gcc $(CFLAGS) -g -no-pie $(NAME) $(MLX_FLAGS) $(LIBFT_LIB) -o test_game
 	@echo "Running test_game"
-	@valgrind --leak-check=full ./test_game maps/map.ber
+	@valgrind --leak-check=full ./test_game maps/map4.ber
 	@rm -f test_game
 
 .PHONY: all clean fclean re

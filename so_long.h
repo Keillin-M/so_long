@@ -6,7 +6,7 @@
 /*   By: kmaeda <kmaeda@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 10:58:54 by kmaeda            #+#    #+#             */
-/*   Updated: 2025/06/27 11:11:31 by kmaeda           ###   ########.fr       */
+/*   Updated: 2025/07/08 11:34:18 by kmaeda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int		ft_close(t_game *game);
 int		valid_map(t_game *game, int i, int j);
 int		map_size(t_game *game, char **argv);
 int		read_map(t_game *game, char **argv);
-int		load_map(t_game *game, char **argv, int i, int row);
+//int		load_map(t_game *game);
 int		ft_printf(const char *format, ...);
 int		draw_map(t_game *game, int row, int x);
 int		render(t_game *game);

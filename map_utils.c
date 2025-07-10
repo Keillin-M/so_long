@@ -6,7 +6,7 @@
 /*   By: kmaeda <kmaeda@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 13:51:24 by kmaeda            #+#    #+#             */
-/*   Updated: 2025/06/30 13:52:25 by kmaeda           ###   ########.fr       */
+/*   Updated: 2025/07/08 11:33:55 by kmaeda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ int	read_map(t_game *game, char **argv)
 
 int	draw_map(t_game *game, int row, int x)
 {
+	mlx_clear_window(game->mlx, game->win);
 	while (row < game->total_row)
 	{
 		x = 0;
@@ -98,32 +99,6 @@ int	draw_map(t_game *game, int row, int x)
 			x++;
 		}
 		row++;
-	}
-	return (0);
-}
-
-int	load_map(t_game *game, char **argv, int i, int row)
-{
-	while (i < game->total_row)
-	{
-		if (game->map[i])
-			free(game->map[i]);
-		if (game->map_cpy[i])
-			free(game->map_cpy[i]);
-		game->map[i] = NULL;
-		game->map_cpy[i] = NULL;
-		i++;
-	}
-	if (read_map (game, argv))
-	{
-		ft_printf("read_map\n");
-		return (1);
-	}
-	mlx_clear_window(game->mlx, game->win);
-	if (draw_map(game, row, 0))
-	{
-		ft_printf("draw_map\n");
-		return (1);
 	}
 	return (0);
 }

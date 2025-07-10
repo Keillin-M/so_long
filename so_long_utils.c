@@ -6,7 +6,7 @@
 /*   By: kmaeda <kmaeda@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 12:38:35 by kmaeda            #+#    #+#             */
-/*   Updated: 2025/06/27 12:39:58 by kmaeda           ###   ########.fr       */
+/*   Updated: 2025/07/08 11:33:44 by kmaeda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,7 @@ int	ft_move(t_game *game, int keycode)
 			ft_printf("Oh, no! YOU LOSE!\n");
 			ft_close(game);
 		}
-		if (game->map[game->new_y][game->new_x] == '0' ||
-			game->map[game->new_y][game->new_x] == 'P')
+		if (game->map[game->new_y][game->new_x] == '0')
 		{
 			ft_image(game, game->floor, game->x, game->y);
 			game->map[game->y][game->x] = '0';

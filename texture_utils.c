@@ -6,7 +6,7 @@
 /*   By: kmaeda <kmaeda@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 10:30:46 by kmaeda            #+#    #+#             */
-/*   Updated: 2025/07/02 12:54:53 by kmaeda           ###   ########.fr       */
+/*   Updated: 2025/07/08 11:34:54 by kmaeda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void	ft_xpm_map(t_game *game)
 			&game->w, &game->h);
 	game->floor = mlx_xpm_file_to_image(game->mlx, "textures/floor.xpm", \
 			&game->w, &game->h);
-	game->obj = mlx_xpm_file_to_image(game->mlx, "textures/heart.xpm", \
+	game->obj = mlx_xpm_file_to_image(game->mlx, "textures/obj.xpm", \
 			&game->w, &game->h); 
 	game->exit = mlx_xpm_file_to_image(game->mlx, "textures/exit.xpm", \
 			&game->w, &game->h);

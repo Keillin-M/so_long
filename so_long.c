@@ -6,7 +6,7 @@
 /*   By: kmaeda <kmaeda@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 11:11:44 by kmaeda            #+#    #+#             */
-/*   Updated: 2025/06/27 12:37:50 by kmaeda           ###   ########.fr       */
+/*   Updated: 2025/07/08 11:33:37 by kmaeda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ static int	map_ext(char *argv)
 		ft_printf("File extension invalid\n");
 		return (1);
 	}
-	if (argv[len - 5] == '/')
+	if (!ft_isalnum(argv[len - 5]) && argv[len - 5] != '-'
+		&& argv[len - 5] != '_')
 	{
 		ft_printf("File extension invalid\n");
 		return (1);
@@ -41,9 +42,10 @@ int	ft_close(t_game *game)
 	if (game->win)
 		mlx_destroy_window(game->mlx, game->win);
 	if (game->mlx)
+	{
 		mlx_destroy_display(game->mlx);
-	if (game->mlx)
 		free(game->mlx);
+	}
 	return (exit(0), 0);
 }
 
@@ -74,6 +76,8 @@ static int	ft_open(t_game *game, char **argv)
 		return (perror("Malloc failed"), 1);
 	if (read_map(game, argv))
 		return (1);
+	if (valid_map(game, 0, 0))
+		return (1);
 	ft_xpm(game);
 	game->win = mlx_new_window(game->mlx, game->line_len * game->w, 
 			game->total_row * game->h, "So Long");
@@ -93,9 +97,7 @@ int	main(int argc, char **argv)
 	ft_init(&game);
 	if (ft_open(&game, argv))
 		return (exit(0), 1);
-	if (valid_map(&game, 0, 0))
-		game.error = 1;
-	if (load_map(&game, argv, 0, 0))
+	if (draw_map(&game, 0, 0))
 		game.error = 1;
 	if (game.error)
 		return (ft_close(&game), 1);
